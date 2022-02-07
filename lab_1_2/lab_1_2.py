@@ -1,17 +1,21 @@
 from tkinter import *
 
 window = Tk()
-window.title('Example') 
-window.geometry('600x400+100+200')
 
-import tkinter.messagebox as box 
+# создание кнопки выхода
+btn_end = Button(window, text = 'Выйти', command=exit) 
 
-def showtext(event):
-	box.showinfo('Text info', txt.get(1.0,END)) 
-	txt.delete(2.0,2.3)
+# менеджер геометрии
+btn_end.pack(padx = 150, pady = 20)
 
-txt = Text(width=25, height=5, fg='black', wrap=WORD) # default 80*24
-txt.insert(2.0, 'It is a good day')
-txt.pack() 
-txt.bind('<Return>',showtext) 
+def tog():
+	if window.cget('bg') == 'green': 
+		window.configure(bg = 'yellow') 
+	else:
+		window.configure(bg = 'green')
+
+btn_tog = Button(window, text = 'Изменить', command=tog) 
+btn_tog.pack(padx = 150, pady = 20)
+
+
 window.mainloop()
