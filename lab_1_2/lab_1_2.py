@@ -1,21 +1,20 @@
 from tkinter import *
 
 window = Tk()
+window.title('Example') 
+window.geometry('600x400+100+200') 
 
-# создание кнопки выхода
-btn_end = Button(window, text = 'Выйти', command=exit) 
+import tkinter.messagebox as box
 
-# менеджер геометрии
-btn_end.pack(padx = 150, pady = 20)
+def showdata():
+	a = ent1.get()
+	ent1.delete(0, len(a))
+	ent1.insert(0, "!" + a + "!")
 
-def tog():
-	if window.cget('bg') == 'green': 
-		window.configure(bg = 'yellow') 
-	else:
-		window.configure(bg = 'green')
-
-btn_tog = Button(window, text = 'Изменить', command=tog) 
-btn_tog.pack(padx = 150, pady = 20)
-
-
+lbl1 = Label(window, text='The first example') 
+lbl1.grid(row = 0, column = 0)
+ent1 = Entry()
+ent1.grid(row = 0, column = 1)
+btn1 = Button(window, text = 'Ввести данные', command=showdata) 
+btn1.grid(row = 1, column = 1)
 window.mainloop()
