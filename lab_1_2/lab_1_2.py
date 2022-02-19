@@ -2,14 +2,43 @@
 
 # Программа переводит числа из 10-й СС в 3-ю и обратно
 
+# тесты
 
+'''
+10 -> 3:
+pos:
+1) 1983 -> 2201110
+2) 543.341 -> 202010.100012
+3) 0.36 -> 0.100201
+3) 0.3600 -> 0.100201
+neg:
+1) 0.. -> error
+2) 123..4 -> error
+3) 12345. -> error
+4) 0. -> error
+
+3 -> 10:
+pos:
+1) 121 -> 16
+2) 121.02 -> 16.222222
+3) 0.1201 -> 0.567901
+neg:
+1) 432 -> error
+2) 432.1 -> error
+3) 0.29 -> error
+4) 0.. ->error
+5) 0. -> error
+6) 120..2 -> error
+7) 121. -> error
+
+'''
 import tkinter as tk
 from tkinter import messagebox
 
 # функции перевода
 # _______________________________________________________________________
-
 # Перевод в десятичную из 3
+
 def from_3_to_10():
 	try:
 		# Взятие поля ввода
@@ -23,12 +52,11 @@ def from_3_to_10():
 			if i in num:
 				flag = True
 
-		# Обработка крайних точек
-		if  num[-1] == '.' or flag:
+		if  flag or num[-1] == '.':
 			messagebox.showinfo("Ошибка", "Число введено некорректно")
 			clear_all()
 		else:
-			# Целое или дробное
+
 			if '.' in str(num):
 				int_part, float_part = str(num).split('.')
 
@@ -49,8 +77,7 @@ def from_3_to_10():
 				num = str(num)[::-1]
 				for i in range(len(num)):
 					summ += int(num[i]) * 3 ** i
-
-
+			
 			summ = round(summ, 6)
 
 			# Вывод
@@ -64,9 +91,8 @@ def from_3_to_10():
 		clear_all()
 
 
-
-
 # Перевод из десятичной в 3
+
 def from_10_to_3():
 	try:
 		# Взятие поля ввода
@@ -79,16 +105,16 @@ def from_10_to_3():
 			messagebox.showinfo("Ошибка", "Число введено некорректно")
 			clear_all()
 		else:
-			# Целое или дробное
-			if '.' in str(num) and num[0]=='.':
-				ch = '0.' + str(from_10_float(num[1:]))
-				ch = round(float(ch), 6)
-			elif '.' in str(num) and num[0]!='.':
+
+			if '.' in str(num):
 				int_part, float_part = str(num).split('.')
-				ch = from_10_int(int_part) + '.' + from_10_float(float_part)
-				ch = round(float(ch), 6)
+
+				ch = float(from_10_int(int_part) + '.' + from_10_float(float_part))
 			else:
-				ch = from_10_int(num)
+				ch = int(from_10_int(num))
+			# str
+			ch = round(ch, 6)
+
 
 			# Вывод
 			entry_out['state'] = tk.NORMAL
@@ -122,7 +148,15 @@ def from_10_float(num):
 
 	return new_ch
 
+
 # _______________________________________________________________________
+
+# Очистка
+def clear(entry):
+	entry['state'] = tk.NORMAL
+	entry.delete(0, tk.END)
+	entry.insert(0, 0)
+	entry['state'] = tk.DISABLED
 
 # очистить ввод
 def clear_in():
@@ -152,12 +186,7 @@ def add_digit_or_dot(digit):
 	entry_in.insert(0, value + digit)
 	entry_in['state'] = tk.DISABLED
 
-# Очистка
-def clear(entry):
-	entry['state'] = tk.NORMAL
-	entry.delete(0, tk.END)
-	entry.insert(0, 0)
-	entry['state'] = tk.DISABLED
+
 
 # Удаление символа
 def delete(entry):
