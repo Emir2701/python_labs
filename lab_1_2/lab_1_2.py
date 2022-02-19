@@ -146,7 +146,7 @@ def info():
 def add_digit_or_dot(digit):
 	entry_in['state'] = tk.NORMAL
 	value = entry_in.get()
-	if value[0]=='0' and len(value) == 1:
+	if value[0]=='0' and len(value) == 1 and digit != '.':
 		value = value[1:]
 	entry_in.delete(0, tk.END)
 	entry_in.insert(0, value + digit)
