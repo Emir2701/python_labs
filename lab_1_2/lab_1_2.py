@@ -10,18 +10,31 @@ pos:
 1) 1983 -> 2201110
 2) 543.341 -> 202010.100012
 3) 0.36 -> 0.100201
-3) 0.3600 -> 0.100201
+4) 0.3600 -> 0.100201
+5) -1983 -> -2201110
+6) -543.341 -> -202010.100012
+7) -0.36 -> -0.100201
+8) -0.3600 -> -0.100201
 neg:
 1) 0.. -> error
 2) 123..4 -> error
 3) 12345. -> error
 4) 0. -> error
+5) - -> error
+6) -- -> error
+7) 19-83 -> error
+8) 543.341- -> error
+9) 0.3-6 -> error
+10) 0.3600- -> error
 
 3 -> 10:
 pos:
 1) 121 -> 16
 2) 121.02 -> 16.222222
 3) 0.1201 -> 0.567901
+4) -121 -> -16
+5) -121.02 -> -16.222222
+6) -0.1201 -> -0.567901
 neg:
 1) 432 -> error
 2) 432.1 -> error
@@ -30,6 +43,11 @@ neg:
 5) 0. -> error
 6) 120..2 -> error
 7) 121. -> error
+8) 121- -> error
+9) 121.-02 -> error
+10) 0.12-01 -> error
+11) - -> error
+12) -- -> error
 
 '''
 import tkinter as tk
@@ -52,10 +70,15 @@ def from_3_to_10():
 			if i in num:
 				flag = True
 
-		if  flag or num[-1] == '.':
+		if  flag or num[-1] == '.' or num == '-':
 			messagebox.showinfo("Ошибка", "Число введено некорректно")
 			clear_all()
 		else:
+			# флаг для знака
+			flag_minus = ''
+			if num[0] == '-':
+				flag_minus = '-'
+				num = num[1::]
 
 			if '.' in str(num):
 				int_part, float_part = str(num).split('.')
@@ -80,6 +103,9 @@ def from_3_to_10():
 			
 			summ = round(summ, 6)
 
+			# флаг для знака
+			if flag_minus == '-':
+				summ *= -1;
 			# Вывод
 			entry_out['state'] = tk.NORMAL
 			entry_out.delete(0, tk.END)
@@ -101,10 +127,16 @@ def from_10_to_3():
 		entry_in['state'] = tk.DISABLED
 
 		# Обработка крайних точек
-		if num[-1] == '.':
+		if num[-1] == '.' or num == '-':
 			messagebox.showinfo("Ошибка", "Число введено некорректно")
 			clear_all()
 		else:
+
+			# флаг для знака
+			flag_minus = ''
+			if num[0] == '-':
+				flag_minus = '-'
+				num = num[1::]
 
 			if '.' in str(num):
 				int_part, float_part = str(num).split('.')
@@ -115,6 +147,9 @@ def from_10_to_3():
 			# str
 			ch = round(ch, 6)
 
+			# флаг для знака
+			if flag_minus == '-':
+				ch *= -1;
 
 			# Вывод
 			entry_out['state'] = tk.NORMAL
@@ -215,7 +250,7 @@ def make_clear_button(operation):
 
 # Обработка кнопок
 def press_key(event):
-	if event.char.isdigit() or event.char=='.':
+	if event.char.isdigit() or event.char=='.' or event.char=='-':
 		add_digit_or_dot(event.char)
 # MAIN
 #___________________________________________________________________________________
@@ -286,11 +321,13 @@ make_digit_button('8').grid(row=4, column=1, stick='wens', padx=5, pady=5)
 make_digit_button('9').grid(row=4, column=2, stick='wens', padx=5, pady=5)
 make_digit_button('0').grid(row=5, column=0, stick='wens', padx=5, pady=5)
 make_digit_button('.').grid(row=5, column=1, columnspan=2, stick='wens', padx=5, pady=5)
+make_digit_button('-').grid(row=4, column=3, rowspan=2, stick='wens', padx=5, pady=5)
+
 
 # Создание кноки удаления символа
-make_del_button('del').grid(row=4, column=3, rowspan=2, stick='wens', padx=5, pady=5)
+make_del_button('del').grid(row=3, column=3, stick='wens', padx=5, pady=5)
 # Создание кноки очистки ввода
-make_clear_button('C').grid(row=2, column=3, rowspan=2, stick='wens', padx=5, pady=5)
+make_clear_button('C').grid(row=2, column=3, stick='wens', padx=5, pady=5)
 
 # выравнивание по столбцам
 win.grid_columnconfigure(0, minsize=60)
