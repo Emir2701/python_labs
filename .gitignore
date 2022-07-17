@@ -1,5 +1,2 @@
 .DS_Store
-lab_1_2/.DS_Store
-
-tkinter/
-.idea/
+__pycache__
